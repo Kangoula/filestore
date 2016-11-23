@@ -1,9 +1,19 @@
 package org.filestore.ejb.file;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import org.filestore.api.*;
+import org.filestore.ejb.store.BinaryStoreServiceException;
+import org.filestore.ejb.store.BinaryStreamNotFoundException;
+import org.filestore.ejb.store.S3StoreServiceBean;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.DriverManager;
@@ -13,24 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.RollbackException;
-
-import org.filestore.api.FileItem;
-import org.filestore.api.FileService;
-import org.filestore.api.FileServiceAdmin;
-import org.filestore.api.FileServiceException;
-import org.filestore.api.FileServiceLocal;
-import org.filestore.ejb.store.BinaryStoreService;
-import org.filestore.ejb.store.BinaryStoreServiceException;
-import org.filestore.ejb.store.BinaryStreamNotFoundException;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class FileServiceTest {
 	
@@ -41,7 +34,7 @@ public class FileServiceTest {
     private static FileService service;
     private static FileServiceLocal localService;
     private static FileServiceAdmin adminService;
-    private static BinaryStoreService store;
+    private static S3StoreServiceBean store;
     private static Mockery context = new Mockery();
 
 	@BeforeClass
@@ -68,7 +61,7 @@ public class FileServiceTest {
         localService = (FileServiceLocal) service;
         adminService = (FileServiceAdmin) service;
         
-        store = context.mock(BinaryStoreService.class);
+        store = context.mock(S3StoreServiceBean.class);
         ((FileServiceBean)service).store = store;
     }
 

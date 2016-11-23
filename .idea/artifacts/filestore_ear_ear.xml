@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="filestore-ear:ear">
+    <output-path>$PROJECT_DIR$/filestore-ear/target</output-path>
+    <root id="archive" name="filestore-ear.ear">
+      <element id="artifact" artifact-name="filestore-ear:ear exploded" />
+    </root>
+  </artifact>
+</component>

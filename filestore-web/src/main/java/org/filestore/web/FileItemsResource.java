@@ -1,7 +1,19 @@
 package org.filestore.web;
 
+import org.filestore.api.*;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -10,26 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.filestore.api.FileItem;
-import org.filestore.api.FileService;
-import org.filestore.api.FileServiceAdmin;
-import org.filestore.api.FileServiceException;
-import org.filestore.api.FileServiceLocal;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 @Path("/files")
 @RequestScoped
@@ -87,17 +79,46 @@ public class FileItemsResource {
 			message = form.get("message").get(0).getBodyAsString();
 		}
 		String name = null;
-		InputStream data = null;
+		final FileData fd = new FileData();
 		if ( !form.containsKey("file")) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("parameter 'file' is mandatory").build();
 		} else {
 			InputPart part = form.get("file").get(0);
 			String contentHeader = part.getHeaders().getFirst("Content-Disposition");
 			name = contentHeader.substring(contentHeader.lastIndexOf("=")+1).replaceAll("\"", "");
-			data = part.getBody(InputStream.class, null);
+
+			String contentLength = part.getHeaders().getFirst("Content-Length");
+			contentLength = contentLength.substring(contentHeader.lastIndexOf("=")+1).replaceAll("\"", "");
+
+			long size = Long.parseLong(contentLength);
+
+			final InputStream data  = part.getBody(InputStream.class, null);
+			fd.setData(new DataHandler(new DataSource() {
+				@Override
+				public InputStream getInputStream() throws IOException {
+					return data;
+				}
+
+				@Override
+				public OutputStream getOutputStream() throws IOException {
+					throw new IOException("Read only");
+				}
+
+				@Override
+				public String getContentType() {
+					return "*/*";
+				}
+
+				@Override
+				public String getName() {
+					return "[File DataHandler Name] InputStream";
+				}
+			}));
+			fd.setSize(size);
 		}
-		
-		String id = fileServiceLocal.postFile(owner, receivers, message, name, data);
+
+
+		String id = fileService.postFile(owner, receivers, message, name, fd);
 		
 		return Response.ok(id).build();
 	}

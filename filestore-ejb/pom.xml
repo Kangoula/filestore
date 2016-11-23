@@ -69,6 +69,11 @@
 			<version>2.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.59</version>
+		</dependency>
 	</dependencies>
 
 	<build>

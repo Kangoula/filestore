@@ -44,6 +44,7 @@ import org.filestore.ejb.file.metrics.FileServiceMetricsBean;
 import org.filestore.ejb.store.BinaryStoreService;
 import org.filestore.ejb.store.BinaryStoreServiceException;
 import org.filestore.ejb.store.BinaryStreamNotFoundException;
+import org.filestore.ejb.store.S3StoreServiceBean;
 import org.jboss.ejb3.annotation.SecurityDomain;
 
 @Stateless(name = "fileservice")
@@ -62,7 +63,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	@Resource
 	protected SessionContext ctx;
 	@EJB
-	protected BinaryStoreService store;
+	protected S3StoreServiceBean store;
 	@Resource(mappedName = "java:jboss/exported/jms/topic/Notification")
 	private Topic notificationTopic;
 	@Inject 
@@ -80,6 +81,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	public String postFile(String owner, List<String> receivers, String message, String name, FileData data) throws FileServiceException {
 		LOGGER.log(Level.INFO, "Post File called (DataHandler)");
 		try {
+
 			return this.internalPostFile(owner, receivers, message, name, data.getData().getInputStream());
 		} catch (IOException e) {
 			throw new FileServiceException("error during posting file", e);

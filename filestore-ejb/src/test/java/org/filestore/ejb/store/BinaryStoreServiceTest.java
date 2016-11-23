@@ -19,8 +19,8 @@ public class BinaryStoreServiceTest {
 	
 	@BeforeClass
 	public static void init() {
-		service = new BinaryStoreServiceBean();
-		((BinaryStoreServiceBean)service).init();
+		service = new S3StoreServiceBean();
+		((S3StoreServiceBean)service).init();
 	}
 	
 	@Test

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/filestore-1.iml" filepath="$PROJECT_DIR$/.idea/filestore-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filestore-api/filestore-api.iml" filepath="$PROJECT_DIR$/filestore-api/filestore-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filestore-client/filestore-client.iml" filepath="$PROJECT_DIR$/filestore-client/filestore-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filestore-ear/filestore-ear.iml" filepath="$PROJECT_DIR$/filestore-ear/filestore-ear.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filestore-ejb/filestore-ejb.iml" filepath="$PROJECT_DIR$/filestore-ejb/filestore-ejb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filestore-web/filestore-web.iml" filepath="$PROJECT_DIR$/filestore-web/filestore-web.iml" />
+    </modules>
+  </component>
+</project>

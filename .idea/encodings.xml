@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/filestore-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/filestore-client" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/filestore-ear" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/filestore-ejb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/filestore-web" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
