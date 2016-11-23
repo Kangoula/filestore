@@ -3,7 +3,9 @@ package org.filestore.ejb.store;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import org.filestore.api.FileData;
 import org.filestore.ejb.file.FileServiceBean;
@@ -12,9 +14,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,17 +53,17 @@ public class S3StoreServiceBean implements S3StoreService {
     }
 
     public String put(FileData data) throws BinaryStoreServiceException {
-        List<PartETag> partETags = new ArrayList<PartETag>();
+        //List<PartETag> partETags = new ArrayList<PartETag>();
         String id = UUID.randomUUID().toString().replaceAll("-", "");
-        InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(
-                bucketName, id);
-        InitiateMultipartUploadResult initResponse =
-                client.initiateMultipartUpload(initRequest);
+      //  InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(
+      //          bucketName, id);
+      //  InitiateMultipartUploadResult initResponse =
+      //          client.initiateMultipartUpload(initRequest);
 
        // File file = new File(filePath);
-        long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
+        //long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
         LOGGER.log(Level.INFO, "Starting upload");
-        try {
+       /* try {
             ObjectMetadata m = new ObjectMetadata();
             m.setContentDisposition("attachment; filename="+data.getName());
             PutObjectRequest p = new PutObjectRequest(bucketName, id, data.getData().getInputStream(), m)
@@ -89,7 +90,7 @@ public class S3StoreServiceBean implements S3StoreService {
                 LOGGER.log(Level.INFO, "Upload request send");
                 filePosition += partSize;
             }
-            LOGGER.log(Level.INFO, "Boucle finie");*/
+            LOGGER.log(Level.INFO, "Boucle finie");
             // Step 3: Complete.
             CompleteMultipartUploadRequest compRequest = new
                     CompleteMultipartUploadRequest(bucketName,
@@ -104,7 +105,20 @@ public class S3StoreServiceBean implements S3StoreService {
             client.abortMultipartUpload(new AbortMultipartUploadRequest(
                     bucketName, id, initResponse.getUploadId()));
 
+        }*/
+
+          ObjectMetadata m = new ObjectMetadata();
+            m.setContentDisposition("attachment; filename="+data.getName());
+        PutObjectRequest p = null;
+        try {
+            p = new PutObjectRequest(bucketName, id, data.getData().getInputStream(), m)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        p.getMetadata().setContentLength(data.getSize());
+            TransferManager t = new TransferManager(cred);
+            t.upload(p);
 
 
         return id;
