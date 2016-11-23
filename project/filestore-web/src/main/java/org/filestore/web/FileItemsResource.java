@@ -92,6 +92,8 @@ public class FileItemsResource {
 			long size = Long.parseLong(length);
 
 			final InputStream data  = part.getBody(InputStream.class, null);
+			fd.setName(name);
+
 			fd.setData(new DataHandler(new DataSource() {
 				@Override
 				public InputStream getInputStream() throws IOException {

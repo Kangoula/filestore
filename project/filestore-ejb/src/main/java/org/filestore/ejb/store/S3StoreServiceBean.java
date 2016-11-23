@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.transfer.TransferManager;
 import org.filestore.api.FileData;
 import org.filestore.ejb.file.FileServiceBean;
 
@@ -29,13 +30,14 @@ public class S3StoreServiceBean implements S3StoreService {
 
     private static final Logger LOGGER = Logger.getLogger(FileServiceBean.class.getName());
 
+    private static final AWSCredentials cred = new BasicAWSCredentials(System.getProperty("AWS_ACCESS_KEY_ID"),System.getProperty("AWS_SECRET_ACCESS_KEY"));
+
     private AmazonS3Client client ;
     private static String bucketName = "miage-sid-2016";
 
 
     public S3StoreServiceBean() {
-        AWSCredentials cred = new BasicAWSCredentials(System.getProperty("AWS_ACCESS_KEY_ID"),System.getProperty("AWS_SECRET_ACCESS_KEY"));
-        this.client = new AmazonS3Client(cred);
+                this.client = new AmazonS3Client(cred);
     }
 
 
@@ -61,7 +63,13 @@ public class S3StoreServiceBean implements S3StoreService {
         long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
         LOGGER.log(Level.INFO, "Starting upload");
         try {
-            client.putObject(bucketName, id, data.getData().getInputStream(), new ObjectMetadata());
+            ObjectMetadata m = new ObjectMetadata();
+            m.setContentDisposition("attachment; filename="+data.getName());
+            PutObjectRequest p = new PutObjectRequest(bucketName, id, data.getData().getInputStream(), m)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+            p.getMetadata().setContentLength(data.getSize());
+            TransferManager t = new TransferManager(cred);
+            t.upload(p);
            /* // Step 2: Upload parts.
             long filePosition = 0;
             for (int i = 1; filePosition < data.getSize(); i++) {
@@ -104,7 +112,10 @@ public class S3StoreServiceBean implements S3StoreService {
 
     @Override
     public InputStream get(String key) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
-       return  client.getObject(bucketName, key).getObjectContent();
+
+
+
+        return  client.getObject(bucketName, key).getObjectContent();
 
 
     }
