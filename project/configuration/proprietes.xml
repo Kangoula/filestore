@@ -1,0 +1,13 @@
+<security-domain name="filestore" cache-type="default">
+                    <authentication>
+                        <login-module code="UsersRoles" flag="sufficient">
+                            <module-option name="usersProperties" value="${jboss.server.config.dir}/users.properties"/>
+                            <module-option name="rolesProperties" value="${jboss.server.config.dir}/roles.properties"/>
+                            <module-option name="hashUserPassword" value="false"/>
+                        </login-module>
+                        <login-module code="Identity" flag="required">
+                            <module-option name="principal" value="guest"/>
+                            <module-option name="roles" value="guest"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
