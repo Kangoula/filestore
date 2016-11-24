@@ -5,6 +5,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import org.filestore.api.FileData;
 import org.filestore.ejb.file.FileServiceBean;
 
@@ -63,13 +64,21 @@ public class S3StoreServiceBean implements S3StoreService {
         long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
         LOGGER.log(Level.INFO, "Starting upload");
         try {
+
             ObjectMetadata m = new ObjectMetadata();
             m.setContentDisposition("attachment; filename="+data.getName());
-            PutObjectRequest p = new PutObjectRequest(bucketName, id, data.getData().getInputStream(), m)
-                    .withCannedAcl(CannedAccessControlList.PublicRead);
-            p.getMetadata().setContentLength(data.getSize());
+          //  PutObjectRequest p = new PutObjectRequest(bucketName, id, data.getData().getInputStream(), m)
+          //          .withCannedAcl(CannedAccessControlList.PublicRead);
+          //  p.getMetadata().setContentLength(data.getSize());
             TransferManager t = new TransferManager(cred);
-            t.upload(p);
+            //m.setContentLength(data.getSize());
+            Upload caca = t.upload(bucketName, id, data.getData().getInputStream(),m);
+            LOGGER.log(Level.INFO, "MAROT : Transfert finish");
+            caca.waitForCompletion();
+            t.shutdownNow();
+
+           LOGGER.log(Level.INFO, "PROUT " + caca.getState().toString());
+
            /* // Step 2: Upload parts.
             long filePosition = 0;
             for (int i = 1; filePosition < data.getSize(); i++) {
