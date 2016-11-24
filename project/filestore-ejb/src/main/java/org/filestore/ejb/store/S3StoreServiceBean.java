@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import java.io.InputStream;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,11 +80,11 @@ public class S3StoreServiceBean implements S3StoreService {
     }
 
     @Override
-    public InputStream get(String key) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
+    public String get(String key) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
 
+        LOGGER.log(Level.INFO, client.getResourceUrl(bucketName, key) + " kikou");
 
-
-        return  client.getObject(bucketName, key).getObjectContent();
+        return  client.getResourceUrl(bucketName, key);
 
 
     }

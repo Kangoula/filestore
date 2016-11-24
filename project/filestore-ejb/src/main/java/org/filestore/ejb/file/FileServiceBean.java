@@ -144,7 +144,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public InputStream getFileContent(String id) throws FileServiceException {
+	public String getFileContent(String id) throws FileServiceException {
 		LOGGER.log(Level.INFO, "Get File Content called");
 		return this.internalGetFileContent(id);
 	}
@@ -156,52 +156,30 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public byte[] getWholeFileContent(String id) throws FileServiceException {
+	public String getWholeFileContent(String id) throws FileServiceException {
 		LOGGER.log(Level.INFO, "Get Whole File Content called");
-		InputStream is = this.internalGetFileContent(id);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			while ( (len=is.read(buffer)) != -1) {
-			    baos.write(buffer, 0, len);
-			}
-		} catch (IOException e) {
-			throw new FileServiceException("unable to copy stream", e);
-		} finally {
-			try {
-				baos.flush();
-				baos.close();
-				is.close();
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "error during closing streams", e);
-			}
-		}
-		return baos.toByteArray();
+		String url = this.internalGetFileContent(id);
+
+		return url;
 	}
 	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public SerializableInputStream getFileData(String id) throws FileServiceException {
+	public String getFileData(String id) throws FileServiceException {
 		LOGGER.log(Level.INFO, "Get File Data called");
-		InputStream is = this.internalGetFileContent(id);
-		try {
-			return new SerializableInputStream(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+		String url = this.internalGetFileContent(id);
+		return url;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	private InputStream internalGetFileContent(String id) throws FileServiceException {
+	private String internalGetFileContent(String id) throws FileServiceException {
 		try {
 			FileItemEntity item = em.find(FileItemEntity.class, id);
 			if ( item == null ) {
 				throw new FileServiceException("Unable to get file with id '" + id + "' : file does not exists");
 			}
-			InputStream is = store.get(item.getStream()); 
-			return is;
+			String url = store.get(item.getStream());
+			return url;
 		} catch ( BinaryStreamNotFoundException e ) {
 			LOGGER.log(Level.SEVERE, "No binary content found for this file item !!", e);
 			throw new FileServiceException("No binary content found for this file item !!", e);

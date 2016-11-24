@@ -28,10 +28,10 @@ public interface FileService {
 	
 	@WebMethod(operationName="getfilecontent")
 	@WebResult(name="filecontent")
-	public byte[] getWholeFileContent(@WebParam(name="id") String id) throws FileServiceException;
+	public String getWholeFileContent(@WebParam(name="id") String id) throws FileServiceException;
 	
 	@WebMethod(operationName="getfilecontent2")
 	@WebResult(name="filecontent")
-	public SerializableInputStream getFileData(@WebParam(name="id") String id) throws FileServiceException;
+	public String getFileData(@WebParam(name="id") String id) throws FileServiceException;
 
 }
