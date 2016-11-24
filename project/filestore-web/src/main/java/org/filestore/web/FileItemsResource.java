@@ -1,11 +1,10 @@
 package org.filestore.web;
 
 import org.filestore.api.*;
+import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.*;
@@ -13,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -91,30 +89,10 @@ public class FileItemsResource {
 
 			long size = Long.parseLong(length);
 
-			final InputStream data  = part.getBody(InputStream.class, null);
+			final SerializableInputStream data  = new SerializableInputStream(part.getBody(InputStream.class, null));
 			fd.setName(name);
 
-			fd.setData(new DataHandler(new DataSource() {
-				@Override
-				public InputStream getInputStream() throws IOException {
-					return data;
-				}
-
-				@Override
-				public OutputStream getOutputStream() throws IOException {
-					throw new IOException("Read only");
-				}
-
-				@Override
-				public String getContentType() {
-					return "*/*";
-				}
-
-				@Override
-				public String getName() {
-					return "[File DataHandler Name] InputStream";
-				}
-			}));
+			fd.setData(data);
 			fd.setSize(size);
 		}
 

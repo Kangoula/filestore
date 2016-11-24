@@ -51,6 +51,7 @@ public class S3StoreServiceBean implements S3StoreService {
     }
 
     public String put(FileData data) throws BinaryStoreServiceException {
+
         String id = UUID.randomUUID().toString().replaceAll("-", "");
         InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(
                 bucketName, id);
@@ -62,7 +63,7 @@ public class S3StoreServiceBean implements S3StoreService {
             ObjectMetadata m = new ObjectMetadata();
             m.setContentDisposition("attachment; filename="+data.getName());
             TransferManager t = new TransferManager(cred);
-            Upload fileUpload = t.upload(new PutObjectRequest(bucketName, id, data.getData().getInputStream(), m)
+            Upload fileUpload = t.upload(new PutObjectRequest(bucketName, id, data.getData(), m)
                              .withCannedAcl(CannedAccessControlList.PublicRead));
             LOGGER.log(Level.INFO, "Transfert finish");
             fileUpload.waitForCompletion();

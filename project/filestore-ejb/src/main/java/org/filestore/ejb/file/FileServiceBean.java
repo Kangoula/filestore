@@ -48,6 +48,7 @@ import org.filestore.ejb.store.BinaryStoreServiceException;
 import org.filestore.ejb.store.BinaryStreamNotFoundException;
 import org.filestore.ejb.store.S3StoreServiceBean;
 import org.jboss.ejb3.annotation.SecurityDomain;
+import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
 
 @Stateless(name = "fileservice")
 @Interceptors ({FileServiceMetricsBean.class})
@@ -181,10 +182,15 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public DataHandler getFileData(String id) throws FileServiceException {
+	public SerializableInputStream getFileData(String id) throws FileServiceException {
 		LOGGER.log(Level.INFO, "Get File Data called");
 		InputStream is = this.internalGetFileContent(id);
-		return new DataHandler(new InputStreamDataSource(is));
+		try {
+			return new SerializableInputStream(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

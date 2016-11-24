@@ -42,6 +42,11 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-serialization</artifactId>
+            <version>4.2.2.GA</version>
+        </dependency>
 	</dependencies>
 
 	<build>

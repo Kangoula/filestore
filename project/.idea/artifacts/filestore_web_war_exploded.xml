@@ -6,6 +6,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="filestore-web" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: jboss:jboss-serialization:4.2.2.GA" />
+        </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/filestore-web/target/filestore-web/META-INF/MANIFEST.MF" />

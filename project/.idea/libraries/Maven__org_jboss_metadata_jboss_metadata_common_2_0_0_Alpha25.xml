@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.metadata:jboss-metadata-common:2.0.0.Alpha25">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata-common/2.0.0.Alpha25/jboss-metadata-common-2.0.0.Alpha25.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata-common/2.0.0.Alpha25/jboss-metadata-common-2.0.0.Alpha25-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata-common/2.0.0.Alpha25/jboss-metadata-common-2.0.0.Alpha25-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

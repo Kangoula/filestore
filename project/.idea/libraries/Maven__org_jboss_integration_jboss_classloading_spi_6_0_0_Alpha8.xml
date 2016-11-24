@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.integration:jboss-classloading-spi:6.0.0-Alpha8">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-classloading-spi/6.0.0-Alpha8/jboss-classloading-spi-6.0.0-Alpha8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-classloading-spi/6.0.0-Alpha8/jboss-classloading-spi-6.0.0-Alpha8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-classloading-spi/6.0.0-Alpha8/jboss-classloading-spi-6.0.0-Alpha8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

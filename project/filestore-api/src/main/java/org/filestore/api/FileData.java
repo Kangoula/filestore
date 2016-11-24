@@ -1,13 +1,15 @@
 package org.filestore.api;
 
-import javax.activation.DataHandler;
+import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
+
 import javax.xml.bind.annotation.XmlMimeType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 @XmlType
-public class FileData {
+public class FileData implements Serializable {
 
-	private DataHandler data;
+	private SerializableInputStream data;
 
 	private String name;
 
@@ -30,11 +32,12 @@ public class FileData {
 	}
 
 	@XmlMimeType("application/octet-stream")
-	public DataHandler getData() {
-		return data;
+	public SerializableInputStream getData() {
+			return data;
+
 	}
 
-	public void setData(DataHandler data) {
+	public void setData(SerializableInputStream data) {
 		this.data = data;
 	}
 

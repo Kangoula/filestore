@@ -19,6 +19,10 @@
 			<artifactId>javaee-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.jbossas</groupId>
+			<artifactId>jboss-as-connector</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

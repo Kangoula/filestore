@@ -1,7 +1,8 @@
 package org.filestore.api;
 
-import javax.activation.DataHandler;
-import javax.ejb.Local;
+import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
+
+import javax.ejb.Remote;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -10,7 +11,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import java.util.List;
 
-@Local
+@Remote
 @WebService
 @SOAPBinding(style=Style.RPC)
 public interface FileService {
@@ -31,6 +32,6 @@ public interface FileService {
 	
 	@WebMethod(operationName="getfilecontent2")
 	@WebResult(name="filecontent")
-	public DataHandler getFileData(@WebParam(name="id") String id) throws FileServiceException;
+	public SerializableInputStream getFileData(@WebParam(name="id") String id) throws FileServiceException;
 
 }
