@@ -31,7 +31,7 @@ public class S3StoreServiceBean implements S3StoreService {
     private static final AWSCredentials cred = new BasicAWSCredentials(System.getProperty("AWS_ACCESS_KEY_ID"),System.getProperty("AWS_SECRET_ACCESS_KEY"));
 
     private AmazonS3Client client ;
-    private static String bucketName = "miage-sid-2016";
+    private static final String bucketName = System.getProperty("BUCKET_NAME");
 
 
     public S3StoreServiceBean() {
@@ -50,7 +50,7 @@ public class S3StoreServiceBean implements S3StoreService {
     }
 
     public String put(FileData data) throws BinaryStoreServiceException {
-
+        LOGGER.log(Level.INFO, "BUCKET : " + bucketName);
         String id = UUID.randomUUID().toString().replaceAll("-", "");
         InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(
                 bucketName, id);

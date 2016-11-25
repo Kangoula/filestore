@@ -1,6 +1,6 @@
 #!/bin/bash
  
-JAVA_OPTS="-server -XX:+UseCompressedOops -Xms1024m -Xmx2048m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -DAWS_ACCESS_KEY_ID=$AWS_KEY -DAWS_SECRET_ACCESS_KEY=$SECRET" 
+JAVA_OPTS="-server -XX:+UseCompressedOops -Xms1024m -Xmx2048m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -DAWS_ACCESS_KEY_ID=$AWS_KEY -DAWS_SECRET_ACCESS_KEY=$SECRET -DBUCKET_NAME=$BUCKET_NAME" 
 export JAVA_OPTS
 
 

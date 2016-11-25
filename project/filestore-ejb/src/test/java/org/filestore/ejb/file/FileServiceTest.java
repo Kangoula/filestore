@@ -1,8 +1,37 @@
 package org.filestore.ejb.file;
 
+
+import org.filestore.api.*;
+import org.filestore.ejb.store.BinaryStoreServiceException;
+import org.filestore.ejb.store.BinaryStreamNotFoundException;
+import org.filestore.ejb.store.S3StoreServiceBean;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.DriverManager;
+import java.sql.SQLNonTransientConnectionException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 public class FileServiceTest {
 	
-	/*private static Logger LOGGER = Logger.getLogger(FileServiceTest.class.getName());
+	private static Logger LOGGER = Logger.getLogger(FileServiceTest.class.getName());
 	
 	private static EntityManagerFactory factory;
     private static EntityManager em;
@@ -67,11 +96,11 @@ public class FileServiceTest {
 	    	em.getTransaction().begin();
 	    	
 	    	context.checking(new Expectations() {{
-	            oneOf (store).put(with(any(InputStream.class)));
+	            oneOf (store).put(with(any(FileData.class)));
 	            oneOf (store).delete(with(any(String.class)));
 	        }});
 	    	
-	    	List<String> receivers = new ArrayList<String> ();
+	    	List<String> receivers = new ArrayList<String>();
 	    	receivers.add("sheldon@test.com");
 	    	receivers.add("rajesh@test.com");
 	    	receivers.add("penny@test.com");
@@ -99,6 +128,6 @@ public class FileServiceTest {
             LOGGER.log(Level.SEVERE, "error during testing file service", e);
             fail("Exception during testing file service");
         }
-    }*/
+    }
 
 }

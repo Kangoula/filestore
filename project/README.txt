@@ -1,0 +1,1 @@
+Replace /opt/wildfly/modules/system/layers/base/org/dom4j/main/dom4j-1.6.1.jar by this module_wildfly/dom4j-1.6.1.jar

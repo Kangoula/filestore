@@ -1,8 +1,18 @@
 package org.filestore.ejb.file;
 
+import javax.security.auth.Subject;
+import javax.security.auth.callback.*;
+import javax.security.auth.login.AppConfigurationEntry;
+import javax.security.auth.login.Configuration;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class JBossLoginContextFactory {
 
-	/*static class NamePasswordCallbackHandler implements CallbackHandler {
+	static class NamePasswordCallbackHandler implements CallbackHandler {
 		private final String username;
 		private final String password;
 
@@ -56,6 +66,6 @@ public class JBossLoginContextFactory {
 
 		return new LoginContext(configurationName, new Subject(), cbh, config);
 	}
-	*/
+
 
 }

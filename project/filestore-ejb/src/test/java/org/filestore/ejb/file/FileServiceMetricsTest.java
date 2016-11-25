@@ -41,7 +41,7 @@ public class FileServiceMetricsTest {
 	@ArquillianResource
 	InitialContext initialContext;
 
-	/*@Deployment
+	@Deployment
 	public static EnterpriseArchive createDeployment() {
 		JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "filestore-ejb.jar");
 		jar.addPackage("org.filestore.ejb.config");
@@ -108,6 +108,6 @@ public class FileServiceMetricsTest {
 			loginContext.logout();
 		}
 	}
-	*/
+
 
 }
