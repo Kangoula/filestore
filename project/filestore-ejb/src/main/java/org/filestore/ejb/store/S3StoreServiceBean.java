@@ -71,23 +71,13 @@ public class S3StoreServiceBean implements S3StoreService {
                         .withInputStream(data.getData().getInputStream())
                         .withPartSize(partSize);
 
-            // repeat the upload until it succeeds.
-            boolean anotherPass;
-            do {
-                anotherPass = false;  // assume everythings ok
-                try {
-                    // Upload part and add response to our list.
-                    partETags.add(client.uploadPart(uploadRequest).getPartETag());
-                } catch (Exception e) {
-                    anotherPass = true; // repeat
-                }
-            } while (anotherPass);
+            partETags.add(client.uploadPart(uploadRequest).getPartETag());
 
             filePosition += partSize;
             LOGGER.log(Level.INFO, "PART : " + i);
             LOGGER.log(Level.INFO, "FilePosition : " + filePosition);
         }
-
+            LOGGER.log(Level.INFO, "Transfert finish");
         // Step 3: complete.
         CompleteMultipartUploadRequest compRequest = new
                 CompleteMultipartUploadRequest(
@@ -97,6 +87,7 @@ public class S3StoreServiceBean implements S3StoreService {
                 partETags);
 
         client.completeMultipartUpload(compRequest);
+            LOGGER.log(Level.INFO, "Return  id : " + id);
             return id;
     } catch (Exception e) {
         client.abortMultipartUpload(new AbortMultipartUploadRequest(
