@@ -1,9 +1,13 @@
 package org.filestore.ejb.file;
 
 
-import org.filestore.api.*;
+import org.filestore.api.FileData;
+import org.filestore.api.FileServiceAdmin;
+import org.filestore.api.FileServiceException;
+import org.filestore.api.FileServiceLocal;
 import org.filestore.ejb.store.BinaryStoreServiceException;
 import org.filestore.ejb.store.BinaryStreamNotFoundException;
+import org.filestore.ejb.store.S3StoreService;
 import org.filestore.ejb.store.S3StoreServiceBean;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -25,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 
@@ -35,7 +38,7 @@ public class FileServiceTest {
 	
 	private static EntityManagerFactory factory;
     private static EntityManager em;
-    private static FileService service;
+    private static S3StoreService service;
     private static FileServiceLocal localService;
     private static FileServiceAdmin adminService;
     private static S3StoreServiceBean store;
@@ -60,7 +63,7 @@ public class FileServiceTest {
             fail("Exception during JPA EntityManager instanciation.");
         }
         LOGGER.log(Level.INFO, "Building FileService");
-        service = new FileServiceBean();
+        service = new S3StoreServiceBean();
         ((FileServiceBean)service).em = em;
         localService = (FileServiceLocal) service;
         adminService = (FileServiceAdmin) service;
@@ -107,18 +110,11 @@ public class FileServiceTest {
 	    	String key = localService.postFile("jayblanc@gmail.com", receivers, "Bazinga", "The.Big.Bang.Theory.S06E01.mkv", content);
 	    	assertNotNull(key);
 	    	
-	    	FileItem item = service.getFile(key);
-	    	assertEquals("jayblanc@gmail.com", item.getOwner());
-	    	assertEquals("Bazinga", item.getMessage());
-	    	assertEquals("The.Big.Bang.Theory.S06E01.mkv", item.getName());
+	    	String item = service.get(key);
+	    	assertNotNull(item);
 	    	
 	    	adminService.deleteFile(key);
-	    	try {
-	    		item = service.getFile(key);
-	    		fail("The file should not exists anymore !!");
-	    	} catch ( FileServiceException e ) {
-	    		//
-	    	}
+
 	    	
 	    	context.assertIsSatisfied();
 	    	

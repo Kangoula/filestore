@@ -1,10 +1,29 @@
 package org.filestore.ejb.file;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import org.filestore.api.*;
+import org.filestore.ejb.file.entity.FileItemEntity;
+import org.filestore.ejb.file.metrics.FileServiceMetricsBean;
+import org.filestore.ejb.store.BinaryStoreServiceException;
+import org.filestore.ejb.store.BinaryStreamNotFoundException;
+import org.filestore.ejb.store.S3StoreServiceBean;
+import org.jboss.ejb3.annotation.SecurityDomain;
+
+import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.*;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+import javax.jms.JMSContext;
+import javax.jms.Topic;
+import javax.jws.HandlerChain;
+import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
+import javax.transaction.UserTransaction;
+import javax.xml.ws.soap.MTOM;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,52 +31,15 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.jms.JMSContext;
-import javax.jms.Topic;
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TemporalType;
-import javax.xml.ws.soap.MTOM;
-
-import org.filestore.api.FileData;
-import org.filestore.api.FileItem;
-import org.filestore.api.FileService;
-import org.filestore.api.FileServiceAdmin;
-import org.filestore.api.FileServiceException;
-import org.filestore.api.FileServiceLocal;
-import org.filestore.ejb.file.entity.FileItemEntity;
-import org.filestore.ejb.file.metrics.FileServiceMetricsBean;
-import org.filestore.ejb.store.BinaryStoreService;
-import org.filestore.ejb.store.BinaryStoreServiceException;
-import org.filestore.ejb.store.BinaryStreamNotFoundException;
-import org.filestore.ejb.store.S3StoreServiceBean;
-import org.jboss.ejb3.annotation.SecurityDomain;
-import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
-
 @Stateless(name = "fileservice")
 @Interceptors ({FileServiceMetricsBean.class})
 @SecurityDomain("filestore")
 @PermitAll
 @MTOM(enabled=true)
-@WebService(endpointInterface = "org.filestore.api.FileService")
+@WebService(endpointInterface = "org.filestore.api.FileServiceS3")
 @HandlerChain(file="/handler-chain.xml")
-public class FileServiceBean implements FileService, FileServiceLocal, FileServiceAdmin {
+@TransactionManagement(value=TransactionManagementType.BEAN)
+public class FileServiceBean implements  FileServiceLocal, FileServiceAdmin, FileServiceS3 {
 	
 	private static final Logger LOGGER = Logger.getLogger(FileServiceBean.class.getName());
 	
@@ -71,6 +53,8 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	private Topic notificationTopic;
 	@Inject 
 	private JMSContext jmsctx;
+	@Resource
+	private UserTransaction ut;
 	
 	/*@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -79,11 +63,11 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 		return this.internalPostFile(owner, receivers, message, name, new ByteArrayInputStream(data));
 	}*/
 
-	@Override
+	/*@Override
 	@WebMethod(operationName = "postfile")
 	public String postFile(@WebParam(name = "owner") String owner, @WebParam(name = "receivers") List<String> receivers, @WebParam(name = "message") String message, @WebParam(name = "filename") String name, @WebParam(name = "filecontent") byte[] data) throws FileServiceException {
 		return null;
-	}
+	}*/
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -99,11 +83,12 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 		LOGGER.log(Level.INFO, "Post File called (InputStream)");
 		return this.internalPostFile(owner, receivers, message, name, stream);
 	}*/
-	
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+
+	@TransactionAttribute(TransactionAttributeType.NEVER)
 	private String internalPostFile(String owner, List<String> receivers, String message, String name, FileData stream) throws FileServiceException {
 		try {
 			String streamid = store.put(stream);
+			ut.begin();
 			String id = UUID.randomUUID().toString().replaceAll("-", "");
 			FileItemEntity file = new FileItemEntity();
 			file.setId(id);
@@ -113,6 +98,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			file.setName(name);
 			file.setStream(streamid);
 			em.persist(file);
+			ut.commit();
 			
 			this.notify(owner, receivers, id, message);
 			return id;
@@ -170,7 +156,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 		String url = this.internalGetFileContent(id);
 		return url;
 	}
-	
+
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	private String internalGetFileContent(String id) throws FileServiceException {
 		try {
@@ -240,7 +226,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			return null;
 		}
 	}
-	
+
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	private void notify(String owner, List<String> receivers, String id, String message) throws FileServiceException {
 		try {
@@ -261,33 +247,6 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			throw new FileServiceException("unable to notify", e);
 		}
 	}
-	
-	class InputStreamDataSource implements DataSource {
-		private InputStream inputStream;
 
-	    public InputStreamDataSource(InputStream inputStream) {
-	        this.inputStream = inputStream;
-	    }
-
-	    @Override
-	    public InputStream getInputStream() throws IOException {
-	        return inputStream;
-	    }
-
-	    @Override
-	    public OutputStream getOutputStream() throws IOException {
-	        throw new UnsupportedOperationException("Not implemented");
-	    }
-
-	    @Override
-	    public String getContentType() {
-	        return "*/*";
-	    }
-
-	    @Override
-	    public String getName() {
-	        return "InputStreamDataSource";
-	    }
-	}
 
 }

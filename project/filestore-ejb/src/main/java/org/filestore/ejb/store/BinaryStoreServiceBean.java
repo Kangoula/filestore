@@ -1,7 +1,6 @@
 package org.filestore.ejb.store;
 
 import org.filestore.ejb.config.FileStoreConfig;
-import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;
@@ -47,7 +46,7 @@ public class BinaryStoreServiceBean implements BinaryStoreService {
 	}
 
 	@Override
-	public String put(SerializableInputStream is) throws BinaryStoreServiceException {
+	public String put(InputStream is) throws BinaryStoreServiceException {
 		String key = UUID.randomUUID().toString();
 		Path file = Paths.get(base.toString(), key);
 		if ( Files.exists(file) ) {

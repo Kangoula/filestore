@@ -1,7 +1,6 @@
 package org.filestore.api;
 
-import org.jboss.resource.adapter.jdbc.remote.SerializableInputStream;
-
+import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlMimeType;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -9,7 +8,7 @@ import java.io.Serializable;
 @XmlType
 public class FileData implements Serializable {
 
-	private SerializableInputStream data;
+	private DataHandler data;
 
 	private String name;
 
@@ -32,12 +31,12 @@ public class FileData implements Serializable {
 	}
 
 	@XmlMimeType("application/octet-stream")
-	public SerializableInputStream getData() {
+	public DataHandler getData() {
 			return data;
 
 	}
 
-	public void setData(SerializableInputStream data) {
+	public void setData(DataHandler data) {
 		this.data = data;
 	}
 

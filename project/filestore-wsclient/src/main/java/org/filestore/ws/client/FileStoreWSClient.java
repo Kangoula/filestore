@@ -39,7 +39,7 @@ public class FileStoreWSClient {
 		Path path = Paths.get(cmd.getOptionValue("p"));
 
 		FileData content = new FileData();
-		SerializableInputStream data = new SerializableInputStream(new FileDataSource(path.toFile()));
+		InputStream data = new FileDataSource(path.toFile());
 		content.setData(data);
 		StringArray sareceivers = new StringArray();
 		sareceivers.item = Arrays.asList(receivers);
