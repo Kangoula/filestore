@@ -84,8 +84,9 @@ public class FileServiceBean implements  FileServiceLocal, FileServiceAdmin, Fil
 		return this.internalPostFile(owner, receivers, message, name, stream);
 	}*/
 
-	@TransactionAttribute(TransactionAttributeType.NEVER)
+
 	private String internalPostFile(String owner, List<String> receivers, String message, String name, FileData stream) throws FileServiceException {
+
 		try {
 			String streamid = store.put(stream);
 			ut.begin();

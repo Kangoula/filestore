@@ -68,7 +68,6 @@ public class S3StoreServiceBean implements S3StoreService {
                 uploadRequest = new UploadPartRequest()
                         .withBucketName(bucketName).withKey(id)
                         .withUploadId(initResponse.getUploadId()).withPartNumber(i)
-                        .withFileOffset(filePosition)
                         .withInputStream(data.getData().getInputStream())
                         .withPartSize(partSize);
 
