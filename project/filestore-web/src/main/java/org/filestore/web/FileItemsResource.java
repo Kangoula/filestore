@@ -134,10 +134,10 @@ public class FileItemsResource {
 	public Response getFileData(@PathParam("key") String key) throws FileServiceException, UnsupportedEncodingException {
 		LOGGER.log(Level.INFO, "GET /files/" + key + "/download");
 		FileItem item = fileService.getFile(key);
-		String data = fileServiceLocal.getFileContent(key);
+		String data = fileService.getFileData(key);
 		LOGGER.log(Level.INFO, "Data location : " + data);
 		return Response.ok()
-				.header("Content-Disposition", "response-content-disposition=attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8"))
+				.header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8"))
 				.header("Location", data)
 				.status(Response.Status.MOVED_PERMANENTLY)
 				.build();

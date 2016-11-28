@@ -30,8 +30,8 @@
       <file leaf-file-name="S3StoreServiceBean.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/store/S3StoreServiceBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="93" column="74" lean-forward="true" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="74" />
+            <state relative-caret-position="165">
+              <caret line="64" column="38" lean-forward="true" selection-start-line="64" selection-start-column="38" selection-end-line="64" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -39,11 +39,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/filestore-api/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="20" column="21" lean-forward="false" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="FileItemsResource.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="141" column="16" lean-forward="false" selection-start-line="141" selection-start-column="16" selection-end-line="141" selection-end-column="16" />
+            <state relative-caret-position="210">
+              <caret line="141" column="57" lean-forward="false" selection-start-line="141" selection-start-column="40" selection-end-line="141" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -1119,12 +1129,12 @@
       <workItem from="1480172942606" duration="548000" />
       <workItem from="1480190005404" duration="252000" />
       <workItem from="1480328479900" duration="2639000" />
-      <workItem from="1480339228254" duration="2749000" />
+      <workItem from="1480339228254" duration="6534000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33027000" />
+    <option name="totallyTimeSpent" value="36812000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="711" extended-state="6" />
@@ -1195,7 +1205,7 @@
         <state relative-caret-position="135">
           <caret line="9" column="22" lean-forward="false" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1205,7 +1215,7 @@
         <state relative-caret-position="3450">
           <caret line="230" column="73" lean-forward="false" selection-start-line="230" selection-start-column="73" selection-end-line="230" selection-end-column="73" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1282,7 +1292,7 @@
         <state relative-caret-position="630">
           <caret line="89" column="65" lean-forward="false" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="65" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1392,14 +1402,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/filestore-api/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="20" column="21" lean-forward="false" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -1491,7 +1493,7 @@
         <state relative-caret-position="315">
           <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1576,10 +1578,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/file/FileServiceBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="56" column="27" lean-forward="false" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/filestore-api/src/main/java/org/filestore/api/FileServiceS3.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="18" column="21" lean-forward="false" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/filestore-api/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="20" column="21" lean-forward="false" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -1592,20 +1612,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/file/FileServiceBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="56" column="27" lean-forward="false" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/store/S3StoreServiceBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="93" column="74" lean-forward="true" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="74" />
+        <state relative-caret-position="165">
+          <caret line="64" column="38" lean-forward="true" selection-start-line="64" selection-start-column="38" selection-end-line="64" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1614,8 +1624,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="141" column="16" lean-forward="false" selection-start-line="141" selection-start-column="16" selection-end-line="141" selection-end-column="16" />
+        <state relative-caret-position="210">
+          <caret line="141" column="57" lean-forward="false" selection-start-line="141" selection-start-column="40" selection-end-line="141" selection-end-column="57" />
           <folding />
         </state>
       </provider>

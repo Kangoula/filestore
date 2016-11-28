@@ -57,10 +57,12 @@ public class S3StoreServiceBean implements S3StoreService {
         LOGGER.log(Level.INFO, "BUCKET : " + bucketName);
         String id = UUID.randomUUID().toString().replaceAll("-", "");
         long filePosition = 0;
-        long partSize = 500 * 1024 * 1024; // Set part size to 5 MB.
+        long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
         List<PartETag> partETags = new ArrayList<PartETag>();
+        ObjectMetadata meta = new ObjectMetadata();
+        meta.setContentDisposition(data.getName());
         InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(
-                bucketName, id);
+                bucketName, id, meta);
         initRequest.setCannedACL(CannedAccessControlList.PublicRead);
         InitiateMultipartUploadResult initResponse =
                 client.initiateMultipartUpload(initRequest);
@@ -73,8 +75,9 @@ public class S3StoreServiceBean implements S3StoreService {
             os.close();
             is.close();
 
-            long length = data.getSize();
+
             File file = new File("./temp.file");
+            long length = file.length();
             LOGGER.log(Level.INFO, "SIZE : " + length);
         for (int i = 1; filePosition < length; i++) {
             // Last part can be less than 5 MB. Adjust part size.
