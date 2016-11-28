@@ -135,7 +135,12 @@ public class FileItemsResource {
 		LOGGER.log(Level.INFO, "GET /files/" + key + "/download");
 		FileItem item = fileService.getFile(key);
 		String data = fileServiceLocal.getFileContent(key);
-		return Response.ok().header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8")).header("Location", data).build();
+		LOGGER.log(Level.INFO, "Data location : " + data);
+		return Response.ok()
+				.header("Content-Disposition", "response-content-disposition=attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8"))
+				.header("Location", data)
+				.status(Response.Status.MOVED_PERMANENTLY)
+				.build();
 
 	}
 	

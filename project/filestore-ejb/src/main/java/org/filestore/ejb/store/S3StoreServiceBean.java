@@ -10,6 +10,10 @@ import org.filestore.ejb.file.FileServiceBean;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,14 +57,24 @@ public class S3StoreServiceBean implements S3StoreService {
         LOGGER.log(Level.INFO, "BUCKET : " + bucketName);
         String id = UUID.randomUUID().toString().replaceAll("-", "");
         long filePosition = 0;
-        long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
+        long partSize = 500 * 1024 * 1024; // Set part size to 5 MB.
         List<PartETag> partETags = new ArrayList<PartETag>();
         InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(
                 bucketName, id);
+        initRequest.setCannedACL(CannedAccessControlList.PublicRead);
         InitiateMultipartUploadResult initResponse =
                 client.initiateMultipartUpload(initRequest);
         try{
-            long length = IOUtils.toByteArray(data.getData().getInputStream()).length;
+            InputStream is = data.getData().getInputStream();
+            OutputStream os = new FileOutputStream(new File("./temp.file"));
+
+// This will copy the file from the two streams
+            IOUtils.copy(is, os);
+            os.close();
+            is.close();
+
+            long length = data.getSize();
+            File file = new File("./temp.file");
             LOGGER.log(Level.INFO, "SIZE : " + length);
         for (int i = 1; filePosition < length; i++) {
             // Last part can be less than 5 MB. Adjust part size.
@@ -73,17 +87,18 @@ public class S3StoreServiceBean implements S3StoreService {
                 uploadRequest = new UploadPartRequest()
                     .withBucketName(bucketName).withKey(id)
                     .withUploadId(initResponse.getUploadId()).withPartNumber(i)
-                    .withInputStream(data.getData().getInputStream())
+                    .withFile(file)
                     .withPartSize(partSize)
                         .withLastPart(lastPart);
-            LOGGER.log(Level.INFO, uploadRequest.);
             LOGGER.log(Level.INFO, "UPLOAD REQUEST : OK");
             partETags.add(client.uploadPart(uploadRequest).getPartETag());
             LOGGER.log(Level.INFO, "ETags  : " + partETags.get(i-1).getETag());
             filePosition += partSize;
             LOGGER.log(Level.INFO, "PART : " + i);
             LOGGER.log(Level.INFO, "FilePosition : " + filePosition);
+
         }
+        file.delete();
             LOGGER.log(Level.INFO, "Transfert finish");
         // Step 3: complete.
         CompleteMultipartUploadRequest compRequest = new
@@ -108,7 +123,7 @@ public class S3StoreServiceBean implements S3StoreService {
     @Override
     public String get(String key) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
 
-        LOGGER.log(Level.INFO, client.getResourceUrl(bucketName, key) + " kikou");
+        LOGGER.log(Level.INFO, "Return " + client.getResourceUrl(bucketName, key));
 
         return  client.getResourceUrl(bucketName, key);
 
