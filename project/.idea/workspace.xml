@@ -30,10 +30,12 @@
       <file leaf-file-name="S3StoreServiceBean.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/store/S3StoreServiceBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="73" column="74" lean-forward="false" selection-start-line="73" selection-start-column="74" selection-end-line="73" selection-end-column="74" />
+            <state relative-caret-position="247">
+              <caret line="78" column="49" lean-forward="false" selection-start-line="78" selection-start-column="49" selection-end-line="78" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1088#1089#0" expanded="true" />
+                <element signature="e#1150#1151#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -44,7 +46,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="555">
               <caret line="48" column="20" lean-forward="false" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,7 +56,7 @@
       <file leaf-file-name="FileData.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/filestore-api/src/main/java/org/filestore/api/FileData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
+            <state relative-caret-position="315">
               <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -66,7 +70,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
               <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -74,7 +80,7 @@
       <file leaf-file-name="FileServiceBean.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/file/FileServiceBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
+            <state relative-caret-position="840">
               <caret line="56" column="27" lean-forward="false" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -86,7 +92,7 @@
       <file leaf-file-name="FileItemsResource.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-285">
+            <state relative-caret-position="-175">
               <caret line="39" column="33" lean-forward="false" selection-start-line="39" selection-start-column="33" selection-end-line="39" selection-end-column="33" />
               <folding />
             </state>
@@ -98,7 +104,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
               <caret line="18" column="21" lean-forward="false" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -118,7 +126,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="75">
               <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#284#294#0" expanded="false" />
+                <element signature="e#464#465#0" expanded="false" />
+                <element signature="e#485#486#0" expanded="false" />
+                <element signature="e#572#580#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -128,7 +142,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -159,6 +175,7 @@
       <find>job-executor</find>
       <find>@TransactionTimeout</find>
       <find>ut</find>
+      <find>data</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -221,8 +238,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -613,7 +629,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -622,7 +639,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="fst&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-ejb/src/test/java/org/filestore/ejb/file/FileServiceTest.java&#10;file&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-ejb/src/main/java/org/filestore/ejb/file/FileServiceBean.java&#10;fitr&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;FIleI&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;S3S&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-ejb/src/main/java/org/filestore/ejb/store/S3StoreServiceBean.java&#10;fi&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;fir&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;fd&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-api/src/main/java/org/filestore/api/FileData.java&#10;FileDa&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-api/src/main/java/org/filestore/api/FileData.java&#10;Fileit&#9;PSI&#9;JAVA://org.filestore.web.FileItemsResource&#10;S3&#9;PSI&#9;JAVA://org.filestore.ejb.store.S3StoreServiceBean" />
+    <property name="SearchEverywhereHistoryKey" value="fi&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;fst&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-ejb/src/test/java/org/filestore/ejb/file/FileServiceTest.java&#10;file&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-ejb/src/main/java/org/filestore/ejb/file/FileServiceBean.java&#10;fitr&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;FIleI&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;S3S&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-ejb/src/main/java/org/filestore/ejb/store/S3StoreServiceBean.java&#10;fir&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java&#10;fd&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-api/src/main/java/org/filestore/api/FileData.java&#10;FileDa&#9;FILE&#9;file:///Users/Alexandre/Desktop/filestore-1/project/filestore-api/src/main/java/org/filestore/api/FileData.java&#10;Fileit&#9;PSI&#9;JAVA://org.filestore.web.FileItemsResource&#10;S3&#9;PSI&#9;JAVA://org.filestore.ejb.store.S3StoreServiceBean" />
     <property name="js-jscs-nodeInterpreter" value="$USER_HOME$/.nvm/versions/node/v4.4.0/bin/node" />
     <property name="nodejs_interpreter_path" value="$USER_HOME$/.nvm/versions/node/v4.4.0/bin/node" />
     <property name="js.eslint.eslintPackage" value="" />
@@ -1153,15 +1170,16 @@
       <workItem from="1480146816473" duration="11260000" />
       <workItem from="1480172942606" duration="548000" />
       <workItem from="1480190005404" duration="252000" />
+      <workItem from="1480328479900" duration="2639000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27639000" />
+    <option name="totallyTimeSpent" value="30278000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="711" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1184,9 +1202,9 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3263328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3263328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26979" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27382874" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="EJB" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1288,7 +1306,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
           <caret line="51" column="24" lean-forward="false" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1298,6 +1318,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1088#1089#0" expanded="true" />
+            <element signature="e#1150#1151#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1332,7 +1354,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1364,7 +1388,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
           <caret line="50" column="52" lean-forward="false" selection-start-line="50" selection-start-column="52" selection-end-line="50" selection-end-column="52" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1519,7 +1545,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/filestore-api/src/main/java/org/filestore/api/FileData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="315">
           <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1562,7 +1588,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1577,7 +1605,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#284#294#0" expanded="false" />
+            <element signature="e#464#465#0" expanded="false" />
+            <element signature="e#485#486#0" expanded="false" />
+            <element signature="e#572#580#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1585,7 +1619,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1593,7 +1629,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="555">
           <caret line="48" column="20" lean-forward="false" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1601,7 +1639,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="18" column="21" lean-forward="false" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1615,7 +1655,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/file/FileServiceBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
+        <state relative-caret-position="840">
           <caret line="56" column="27" lean-forward="false" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1625,7 +1665,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/filestore-web/src/main/java/org/filestore/web/FileItemsResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-285">
+        <state relative-caret-position="-175">
           <caret line="39" column="33" lean-forward="false" selection-start-line="39" selection-start-column="33" selection-end-line="39" selection-end-column="33" />
           <folding />
         </state>
@@ -1633,10 +1673,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/filestore-ejb/src/main/java/org/filestore/ejb/store/S3StoreServiceBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="73" column="74" lean-forward="false" selection-start-line="73" selection-start-column="74" selection-end-line="73" selection-end-column="74" />
+        <state relative-caret-position="247">
+          <caret line="78" column="49" lean-forward="false" selection-start-line="78" selection-start-column="49" selection-end-line="78" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1088#1089#0" expanded="true" />
+            <element signature="e#1150#1151#0" expanded="true" />
           </folding>
         </state>
       </provider>

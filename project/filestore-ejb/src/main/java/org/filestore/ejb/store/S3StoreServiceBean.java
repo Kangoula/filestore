@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import com.amazonaws.util.IOUtils;
 import org.filestore.api.FileData;
 import org.filestore.ejb.file.FileServiceBean;
 
@@ -59,20 +60,26 @@ public class S3StoreServiceBean implements S3StoreService {
         InitiateMultipartUploadResult initResponse =
                 client.initiateMultipartUpload(initRequest);
         try{
-        for (int i = 1; filePosition < data.getSize(); i++) {
+            long length = IOUtils.toByteArray(data.getData().getInputStream()).length;
+            LOGGER.log(Level.INFO, "SIZE : " + length);
+        for (int i = 1; filePosition < length; i++) {
             // Last part can be less than 5 MB. Adjust part size.
-            partSize = Math.min(partSize, (data.getSize() - filePosition));
-
+            partSize = Math.min(partSize, (length - filePosition));
+            boolean lastPart = filePosition+partSize == length;
+            LOGGER.log(Level.INFO, "LAST PART : " + lastPart);
+            LOGGER.log(Level.INFO, "PARTSIZE : " + partSize);
             // Create request to upload a part.
             UploadPartRequest uploadRequest = null;
                 uploadRequest = new UploadPartRequest()
-                        .withBucketName(bucketName).withKey(id)
-                        .withUploadId(initResponse.getUploadId()).withPartNumber(i)
-                        .withInputStream(data.getData().getInputStream())
-                        .withPartSize(partSize);
-
+                    .withBucketName(bucketName).withKey(id)
+                    .withUploadId(initResponse.getUploadId()).withPartNumber(i)
+                    .withInputStream(data.getData().getInputStream())
+                    .withPartSize(partSize)
+                        .withLastPart(lastPart);
+            LOGGER.log(Level.INFO, uploadRequest.);
+            LOGGER.log(Level.INFO, "UPLOAD REQUEST : OK");
             partETags.add(client.uploadPart(uploadRequest).getPartETag());
-
+            LOGGER.log(Level.INFO, "ETags  : " + partETags.get(i-1).getETag());
             filePosition += partSize;
             LOGGER.log(Level.INFO, "PART : " + i);
             LOGGER.log(Level.INFO, "FilePosition : " + filePosition);
