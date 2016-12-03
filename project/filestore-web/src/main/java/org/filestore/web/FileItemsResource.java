@@ -136,6 +136,7 @@ public class FileItemsResource {
 		FileItem item = fileService.getFile(key);
 		String data = fileService.getFileData(key);
 		LOGGER.log(Level.INFO, "Data location : " + data);
+		LOGGER.log(Level.INFO, "File name : " + item.getName());
 		return Response.ok()
 				.header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8"))
 				.header("Location", data)
