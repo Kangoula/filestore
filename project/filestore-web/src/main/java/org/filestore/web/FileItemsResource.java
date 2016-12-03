@@ -11,10 +11,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,16 +130,38 @@ public class FileItemsResource {
 	
 	@GET
 	@Path("/{key}/download")
+	@Produces({ MediaType.APPLICATION_OCTET_STREAM })
 	public Response getFileData(@PathParam("key") String key) throws FileServiceException, UnsupportedEncodingException {
 		LOGGER.log(Level.INFO, "GET /files/" + key + "/download");
 		FileItem item = fileService.getFile(key);
 		String data = fileService.getFileData(key);
 		LOGGER.log(Level.INFO, "Data location : " + data);
 		LOGGER.log(Level.INFO, "File name : " + item.getName());
-		return Response.ok()
-				.header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8"))
-				.header("Location", data)
-				.status(Response.Status.MOVED_PERMANENTLY)
+		URL url = null;
+		FileOutputStream fis =null;
+		try {
+			url = new URL(data);
+			BufferedInputStream bis = new BufferedInputStream(url.openStream());
+			 fis = new FileOutputStream("./" + item.getName());
+			byte[] buffer = new byte[1024];
+			int count=0;
+			while((count = bis.read(buffer,0,1024)) != -1)
+			{
+				fis.write(buffer, 0, count);
+			}
+			fis.close();
+			bis.close();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		File file = new File("./" + item.getName());
+		file.deleteOnExit();
+
+		return Response.ok(file)
+				.header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode( file.getName(), "utf-8"))
 				.build();
 
 	}
