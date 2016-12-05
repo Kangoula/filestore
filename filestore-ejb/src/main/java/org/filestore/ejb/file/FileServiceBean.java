@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,8 @@ import javax.interceptor.Interceptors;
 import javax.jms.JMSContext;
 import javax.jms.Topic;
 import javax.jws.HandlerChain;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -67,6 +70,47 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	private Topic notificationTopic;
 	@Inject 
 	private JMSContext jmsctx;
+
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public String newFileId() throws FileServiceException {
+		return store.genStreamId();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public String preparePostFile(String owner, List<String> receivers, String message)
+			throws FileServiceException{
+		LOGGER.log(Level.INFO, "PreoarePost File called (" + owner + ")");
+		String id = newFileId();
+		FileItemEntity file = new FileItemEntity();
+		file.setId(id);
+		file.setOwner(owner);
+		file.setReceivers(receivers);
+		file.setMessage(message);
+		file.setPending(true);
+		em.persist(file);
+
+		return id;
+	}
+
+
+
+	@Override
+	@WebMethod(operationName = "hasPendingFile")
+	public boolean hasPendingFile(@WebParam(name = "id") String id) throws FileServiceException {
+		FileItemEntity f = em.find(FileItemEntity.class, id);
+		return f != null && f.isPending();
+	}
+
+
+	@Override
+	@WebMethod(operationName = "completePendingFile")
+	public void completePendingFile(@WebParam(name = "id") String id, @WebParam(name = "path") Path path) throws FileServiceException {
+		LOGGER.log(Level.INFO, "CompletePendingFile  called (" + id + "|" + path.getFileName() +")");
+		FileItemEntity f = em.find(FileItemEntity.class, id);
+		f.setPath(path);
+		em.persist(f);
+	}
 	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -96,7 +140,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	private String internalPostFile(String owner, List<String> receivers, String message, String name, InputStream stream) throws FileServiceException {
 		try {
-			String streamid = store.put(stream);
+			Path streamid = store.put(stream);
 			String id = UUID.randomUUID().toString().replaceAll("-", "");
 			FileItemEntity file = new FileItemEntity();
 			file.setId(id);
@@ -104,7 +148,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			file.setReceivers(receivers);
 			file.setMessage(message);
 			file.setName(name);
-			file.setStream(streamid);
+			file.setPath(streamid);
 			em.persist(file);
 			
 			this.notify(owner, receivers, id, message);
@@ -183,7 +227,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			if ( item == null ) {
 				throw new FileServiceException("Unable to get file with id '" + id + "' : file does not exists");
 			}
-			InputStream is = store.get(item.getStream()); 
+			InputStream is = store.get(item.getPath());
 			return is;
 		} catch ( BinaryStreamNotFoundException e ) {
 			LOGGER.log(Level.SEVERE, "No binary content found for this file item !!", e);
@@ -208,7 +252,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			}
 			em.remove(item);
 			try {
-				store.delete(item.getStream());
+				store.delete(item.getPath());
 			} catch ( BinaryStreamNotFoundException | BinaryStoreServiceException e ) {
 				LOGGER.log(Level.WARNING, "unable to delete binary content, may result in orphean file", e);
 			}

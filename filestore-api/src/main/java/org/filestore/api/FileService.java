@@ -1,5 +1,6 @@
 package org.filestore.api;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -29,7 +30,28 @@ public interface FileService {
 	@WebMethod(operationName="getfilecontent")
 	@WebResult(name="filecontent")
 	public byte[] getWholeFileContent(@WebParam(name="id") String id) throws FileServiceException;
-	
+
+
+	@WebMethod(operationName="preparePostFile")
+	public String preparePostFile(
+			@WebParam(name="owner") String owner,
+			@WebParam(name="receivers") List<String> receivers,
+			@WebParam(name="message") String message
+	) throws FileServiceException;
+
+
+	@WebMethod(operationName = "hasPendingFile")
+	public boolean hasPendingFile(
+			@WebParam(name="id") String id
+	) throws FileServiceException;
+
+	@WebMethod(operationName = "completePendingFile")
+	public void completePendingFile(
+			@WebParam(name="id") String id,
+			@WebParam(name="path") Path path
+	) throws FileServiceException;
+
+
 	@WebMethod(operationName="getfilecontent2")
 	@WebResult(name="filecontent")
 	public DataHandler getFileData(@WebParam(name="id") String id) throws FileServiceException;

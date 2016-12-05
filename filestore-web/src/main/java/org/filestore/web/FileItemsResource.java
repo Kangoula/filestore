@@ -58,6 +58,39 @@ public class FileItemsResource {
 			return files;
 		}
 	}
+
+	@Path("/prepare")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response prepareFile(MultipartFormDataInput input) throws IOException, FileServiceException {
+
+		Map<String, List<InputPart>> form = input.getFormDataMap();
+
+		String owner = null;
+		if ( !form.containsKey("owner") ) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("parameter 'owner' is mandatory").build();
+		} else {
+			owner = form.get("owner").get(0).getBodyAsString();
+		}
+		List<String> receivers = new ArrayList<String> ();
+		if ( !form.containsKey("receivers") ) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("parameter 'receivers' is mandatory").build();
+		} else {
+			for ( InputPart part : form.get("receivers") ) {
+				receivers.add(part.getBodyAsString());
+			}
+		}
+		String message = null;
+		if ( !form.containsKey("message") ) {
+			message = "A files as been uploaded for you";
+		} else {
+			message = form.get("message").get(0).getBodyAsString();
+		}
+
+		String id = fileService.preparePostFile(owner,receivers,message);
+
+		return Response.ok(id).build();
+	}
 	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)

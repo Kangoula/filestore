@@ -1,36 +1,33 @@
 package org.filestore.ejb.store;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.filestore.api.FileData;
+import org.filestore.ejb.config.FileStoreConfig;
 
+import javax.activation.DataHandler;
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-
-import org.filestore.ejb.config.FileStoreConfig;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Startup
 @Singleton(name="binarystore")
 @Local(BinaryStoreService.class)
-public class BinaryStoreServiceBean implements BinaryStoreService {
+public class BinaryStoreServiceStreamBean implements BinaryStoreStreamService {
 
-	private static final Logger LOGGER = Logger.getLogger(BinaryStoreServiceBean.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(BinaryStoreServiceStreamBean.class.getName());
 
-	public static final String DEFAULT_BINARY_HOME = "binarystore";
+	public static final String DEFAULT_BINARY_HOME = "s3store";
 	public static final int DISTINGUISH_SIZE = 2;
 
 	private Path base;
 
-	public BinaryStoreServiceBean() {
+	public BinaryStoreServiceStreamBean() {
 	}
 
 	@PostConstruct
@@ -44,11 +41,6 @@ public class BinaryStoreServiceBean implements BinaryStoreService {
 		}
 	}
 
-	public String genStreamId() {
-		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
-
-
 	@Override
 	public boolean exists(String key) throws BinaryStoreServiceException {
 		Path file = Paths.get(base.toString(), key);
@@ -56,7 +48,7 @@ public class BinaryStoreServiceBean implements BinaryStoreService {
 	}
 
 	@Override
-	public Path put(InputStream is) throws BinaryStoreServiceException {
+	public String put(InputStream is) throws BinaryStoreServiceException {
 		String key = UUID.randomUUID().toString();
 		Path file = Paths.get(base.toString(), key);
 		if ( Files.exists(file) ) {
@@ -73,12 +65,12 @@ public class BinaryStoreServiceBean implements BinaryStoreService {
 				LOGGER.log(Level.SEVERE, "unable to close stream", e);
 			}
 		}
-		return file;
+		return key;
 	}
 
 	@Override
-	public InputStream get(Path file) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
-		//Path file = Paths.get(base.toString(), key);
+	public FileData get(String key) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
+		Path file = Paths.get(base.toString(), key);
 		if ( !Files.exists(file) ) {
 			throw new BinaryStreamNotFoundException("file not found in storage");
 		}
@@ -90,8 +82,8 @@ public class BinaryStoreServiceBean implements BinaryStoreService {
 	}
 	
 	@Override
-	public void delete(Path file) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
-		//Path file = Paths.get(base.toString(), key);
+	public void delete(String key) throws BinaryStoreServiceException, BinaryStreamNotFoundException {
+		Path file = Paths.get(base.toString(), key);
 		if ( !Files.exists(file) ) {
 			throw new BinaryStreamNotFoundException("file not found in storage");
 		}

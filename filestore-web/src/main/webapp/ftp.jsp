@@ -18,11 +18,13 @@
 	<div class="container-fluid">
 		<div class="page-header">
 			<h1>
-				Send a new file
+				Send a new file via FTP
 			</h1>
-			<p>Note: you can <a href="/ftp.jsp">send large file via FTP</a>.</p>
+			<p>You can also <a href="/">send a file with your browser</a>.</p>
+			<p>First, please enter the details about the file you are going to upload.</p>
+			<p>You will get a token that will allow you to upload your file with any FTP client.</p>
 		</div>
-		<form class="form-horizontal" action="./api/files" method="post"
+		<form class="form-horizontal" action="./api/files/prepare" method="post"
 			enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="owner" class="col-sm-2 control-label">Your email</label>
@@ -40,12 +42,6 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="file" class="col-sm-2 control-label">File</label>
-				<div class="col-sm-10">
-					<input type="file" id="file" name="file">
-				</div>
-			</div>
-			<div class="form-group">
 				<label for="message" class="col-sm-2 control-label">Message</label>
 				<div class="col-sm-10">
 					<textarea class="form-control" rows="3" id="message" name="message"></textarea>
@@ -53,7 +49,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-default">Send File</button>
+					<button type="submit" class="btn btn-default">Get my upload token</button>
 				</div>
 			</div>
 		</form>

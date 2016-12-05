@@ -1,5 +1,7 @@
 package org.filestore.ejb.file.entity;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +43,8 @@ public class FileItemEntity extends FileItem {
 	private Date creation;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastdownload;
-	private String stream;
+	private boolean pending;
+	private String path;
 
 	public FileItemEntity() {
 		nbdownloads = 0;
@@ -129,13 +132,22 @@ public class FileItemEntity extends FileItem {
 		this.lastdownload = lastdownload;
 	}
 
-	public String getStream() {
-		return stream;
+	public Path getPath() {
+		return Paths.get(path);
 	}
 
-	public void setStream(String stream) {
-		this.stream = stream;
+	public void setPath(Path path) {
+		this.path = path.toAbsolutePath().toString();
 	}
+
+
+    public boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
+    }
 	
 	@Override
 	public int hashCode() {
@@ -150,7 +162,7 @@ public class FileItemEntity extends FileItem {
 		result = prime * result + (int) (nbdownloads ^ (nbdownloads >>> 32));
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		result = prime * result + ((receivers == null) ? 0 : receivers.hashCode());
-		result = prime * result + ((stream == null) ? 0 : stream.hashCode());
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -203,10 +215,10 @@ public class FileItemEntity extends FileItem {
 				return false;
 		} else if (!receivers.equals(other.receivers))
 			return false;
-		if (stream == null) {
-			if (other.stream != null)
+		if (path == null) {
+			if (other.path != null)
 				return false;
-		} else if (!stream.equals(other.stream))
+		} else if (!path.equals(other.path))
 			return false;
 		if (type == null) {
 			if (other.type != null)
@@ -215,5 +227,6 @@ public class FileItemEntity extends FileItem {
 			return false;
 		return true;
 	}
+
 
 }
