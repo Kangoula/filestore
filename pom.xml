@@ -185,6 +185,10 @@
 				<version>${version.commons-cli}</version>
 				<type>jar</type>
 			</dependency>
+
+
+
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -233,5 +237,6 @@
 		<module>filestore-web</module>
 		<module>filestore-ear</module>
 		<module>filestore-client</module>
+		<module>filestore-ftp</module>
 	</modules>
 </project>

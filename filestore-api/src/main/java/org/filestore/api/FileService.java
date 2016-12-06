@@ -48,7 +48,7 @@ public interface FileService {
 	@WebMethod(operationName = "completePendingFile")
 	public void completePendingFile(
 			@WebParam(name="id") String id,
-			@WebParam(name="path") Path path
+			@WebParam(name="path") String filePath
 	) throws FileServiceException;
 
 

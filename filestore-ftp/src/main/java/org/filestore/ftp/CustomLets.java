@@ -32,19 +32,32 @@ public class CustomLets extends DefaultFtplet {
         String id = (String) session.getAttribute("id");
 
 
-        String path = Configuration.getFolder() + request.getArgument();
+        String path = Configuration.getFolder()+ "/" + id + "/" + request.getArgument();
         Path filePath = Paths.get(path);
 
         LOGGER.log(Level.INFO, " File ended  <--------------------------------------------");
         LOGGER.log(Level.INFO, id);
         LOGGER.log(Level.INFO, filePath.toAbsolutePath().toString());
 
+        new Thread(() -> {
+            try {
+                LOGGER.log(Level.INFO, "calling bean");
+                service.completePendingFile(id, filePath.toAbsolutePath().toString());
+
+                LOGGER.log(Level.INFO, "bean called");
+            } catch (FileServiceException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage());
+            }
+        }).start();
+
+        LOGGER.log(Level.INFO, " Waiting a bit  <--------------------------------------------");
         try {
-            service.completePendingFile(id, filePath);
-        } catch (FileServiceException e) {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        LOGGER.log(Level.INFO, " Running default  <--------------------------------------------");
 
         return super.onDownloadEnd(session, request);
     }

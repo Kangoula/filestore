@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,7 +81,7 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String preparePostFile(String owner, List<String> receivers, String message)
 			throws FileServiceException{
-		LOGGER.log(Level.INFO, "PreoarePost File called (" + owner + ")");
+		LOGGER.log(Level.INFO, "PreparePost File called (" + owner + ")");
 		String id = newFileId();
 		FileItemEntity file = new FileItemEntity();
 		file.setId(id);
@@ -93,8 +94,6 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 		return id;
 	}
 
-
-
 	@Override
 	@WebMethod(operationName = "hasPendingFile")
 	public boolean hasPendingFile(@WebParam(name = "id") String id) throws FileServiceException {
@@ -102,14 +101,20 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 		return f != null && f.isPending();
 	}
 
-
 	@Override
 	@WebMethod(operationName = "completePendingFile")
-	public void completePendingFile(@WebParam(name = "id") String id, @WebParam(name = "path") Path path) throws FileServiceException {
-		LOGGER.log(Level.INFO, "CompletePendingFile  called (" + id + "|" + path.getFileName() +")");
+	public void completePendingFile(@WebParam(name = "id") String id,
+                                    @WebParam(name = "path") String filePath)
+            throws FileServiceException {
+		LOGGER.log(Level.INFO, "CompletePendingFile  called (" + id + "|" + filePath +")");
 		FileItemEntity f = em.find(FileItemEntity.class, id);
-		f.setPath(path);
+        Path p = Paths.get(filePath);
+        String name = p.getFileName().toString();
+        f.setName(name);
+        f.setPath(p);
 		em.persist(f);
+
+        this.notify(f.getOwner(), f.getReceivers(), id, f.getMessage());
 	}
 	
 	@Override
@@ -227,6 +232,11 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			if ( item == null ) {
 				throw new FileServiceException("Unable to get file with id '" + id + "' : file does not exists");
 			}
+
+            LOGGER.log(Level.INFO, "%%%%%% item : " +item);
+            LOGGER.log(Level.INFO, "%%%%%% id : " +item.getId());
+            LOGGER.log(Level.INFO, "%%%%%% name : " +item.getName());
+            LOGGER.log(Level.INFO, "%%%%%% path : " +item.getPath());
 			InputStream is = store.get(item.getPath());
 			return is;
 		} catch ( BinaryStreamNotFoundException e ) {
