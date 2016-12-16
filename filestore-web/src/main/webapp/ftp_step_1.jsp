@@ -13,18 +13,47 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
 	integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX"
 	crossorigin="anonymous">
+	<style>
+		.img-wrapper{
+			position: absolute;
+			left: 20em;
+			width: 20em;
+		}
+
+		.img-wrapper img{
+			width: 100%;
+			height: 100%;
+		}
+
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="page-header">
 			<h1>
-				Next step
+				Step 2:
 			</h1>
 			<p>Please copy the token below and use it as a username when connecting with your ftp client :</p>
-			<p>ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ</p>
-			<p>${uuid}</p>
-			<p>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</p>
+			<div class="img-wrapper">
+				<a href="./img/example.gif" target="_blank">
+					<img src="./img/example.gif" alt="">
+				</a>
+			</div>
+			<p>---------------------------------</p>
+			<p><%= request.getParameter("id") %></p>
+			<p>---------------------------------</p>
+			<p></p>
+			<p></p>
+			<p></p>
+			<h2>Once you are done</h2>
+			<p>If you are done uploading your file, click on this button:</p>
+			<a href="./api/files/complete/<%= request.getParameter("id") %>">
+				<button>I have finished my upload &rarr;</button>
+			</a>
+			<small><i>Note: be sure that you have uploaded your file using an ftp client</i></small>
 		</div>
+
+
 
 	</div>
 	<script

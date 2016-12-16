@@ -3,6 +3,8 @@ package org.filestore.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,21 +15,11 @@ import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.filestore.api.FileItem;
-import org.filestore.api.FileService;
-import org.filestore.api.FileServiceAdmin;
-import org.filestore.api.FileServiceException;
-import org.filestore.api.FileServiceLocal;
+import org.filestore.api.*;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
@@ -44,6 +36,7 @@ public class FileItemsResource {
 	private FileServiceLocal fileServiceLocal;
 	@EJB
 	private FileServiceAdmin fileServiceAdmin;
+
 	
 	public FileItemsResource () {
 	}
@@ -62,7 +55,7 @@ public class FileItemsResource {
 	@Path("/prepare")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response prepareFile(MultipartFormDataInput input) throws IOException, FileServiceException {
+	public Response prepareFile(MultipartFormDataInput input) throws IOException, FileServiceException, URISyntaxException {
 
 		Map<String, List<InputPart>> form = input.getFormDataMap();
 
@@ -89,8 +82,28 @@ public class FileItemsResource {
 
 		String id = fileService.preparePostFile(owner,receivers,message);
 
-		return Response.ok(id).build();
+		//return Response.ok(id).build();
+		return Response.temporaryRedirect(new URI("../ftp_step_1.jsp?id="+id)).build();
+
 	}
+
+
+    @GET
+    @Path("/complete/{id}")
+    public Response complete(@PathParam("id") String id)
+            throws IOException, FileServiceException,
+            URISyntaxException {
+
+
+        LOGGER.log(Level.WARNING, "<----------------------- Complete : …");
+
+
+
+        LOGGER.log(Level.WARNING, "return : " + fileService.finalizeFtpUpload(id));
+        LOGGER.log(Level.WARNING, "--- done ---");
+
+        return Response.temporaryRedirect(new URI("../ftp.jsp")).build();
+    }
 	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -144,11 +157,15 @@ public class FileItemsResource {
 	
 	@GET
 	@Path("/{key}/download")
-	public Response getFileData(@PathParam("key") String key) throws FileServiceException, UnsupportedEncodingException {
+    @Produces("application/x-octet-stream")
+	public Response getFileData(@PathParam("key") String key)
+            throws FileServiceException, UnsupportedEncodingException {
 		LOGGER.log(Level.INFO, "GET /files/" + key + "/download");
 		FileItem item = fileService.getFile(key);
+        LOGGER.log(Level.INFO, "×××××××××××××××× name = " + item.getName());
 		InputStream data = fileServiceLocal.getFileContent(key);
-		return Response.ok(data).header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode(item.getName(), "utf-8")).build();
+		return Response.ok(data).header("Content-Disposition", "attachment; filename*=UTF-8''"
+                + URLEncoder.encode(item.getName(), "utf-8")).build();
 	}
 	
 	@DELETE
@@ -157,5 +174,17 @@ public class FileItemsResource {
 		LOGGER.log(Level.INFO, "DELETE /files/" + key);
 		fileServiceAdmin.deleteFile(key);
 	}
-	
+
+    /*
+    public FtpService getFtpService() {
+        return ftpService;
+    }
+     */
+
+    /*
+    public void setFtpService(FtpService ftpService) {
+        this.ftpService = ftpService;
+    }
+     */
+
 }

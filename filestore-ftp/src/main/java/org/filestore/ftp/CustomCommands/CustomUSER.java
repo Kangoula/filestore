@@ -14,6 +14,7 @@ import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
 
 import javax.ejb.EJB;
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,16 +44,20 @@ public class CustomUSER extends USER {
                 session.setAttribute("id",id);
                 BaseUser user = new BaseUser();
                 user.setName(id);
-                String homeDir = Configuration.getFolder().getAbsolutePath()+"/"+id+"/";
-                user.setHomeDirectory(homeDir);
+                String homeDir = Configuration.getFolder().getAbsolutePath()+"/"+id;
+                File actualFile = new File(homeDir);
+                if(!actualFile.exists() || actualFile.isDirectory()){
+                    user.setHomeDirectory(homeDir);
 
-                List<Authority> auth = new LinkedList<>();
-                auth.add(new WritePermission());
-                user.setAuthorities(auth);
+                    List<Authority> auth = new LinkedList<>();
+                    auth.add(new WritePermission());
+                    user.setAuthorities(auth);
 
-                context.getUserManager().save(user);
+                    context.getUserManager().save(user);
 
-                super.execute(session, context, request);
+                    super.execute(session, context, request);
+                }
+
             }
         } catch (FileServiceException e) {
             e.printStackTrace();

@@ -27,11 +27,9 @@
 		<dependency>
 			<groupId>fr.miage.jayblanc</groupId>
 			<artifactId>filestore-ftp</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 			<type>war</type>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -41,6 +39,7 @@
 				<version>${version.ear.plugin}</version>
 				<configuration>
 					<version>7</version>
+
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
 					<fileNameMapping>no-version</fileNameMapping>
 					<displayName>The FileStore</displayName>
@@ -56,10 +55,6 @@
 							<artifactId>filestore-web</artifactId>
 							<contextRoot>/</contextRoot>
 						</webModule>
-                        <webModule>
-                            <groupId>fr.miage.jayblanc</groupId>
-                            <artifactId>filestore-ftp</artifactId>
-                        </webModule>
 					</modules>
 					<archive>
 						<manifest>

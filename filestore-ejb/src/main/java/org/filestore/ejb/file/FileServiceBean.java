@@ -37,12 +37,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
 import javax.xml.ws.soap.MTOM;
 
-import org.filestore.api.FileData;
-import org.filestore.api.FileItem;
-import org.filestore.api.FileService;
-import org.filestore.api.FileServiceAdmin;
-import org.filestore.api.FileServiceException;
-import org.filestore.api.FileServiceLocal;
+import org.filestore.api.*;
 import org.filestore.ejb.file.entity.FileItemEntity;
 import org.filestore.ejb.file.metrics.FileServiceMetricsBean;
 import org.filestore.ejb.store.BinaryStoreService;
@@ -67,8 +62,13 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	protected SessionContext ctx;
 	@EJB
 	protected BinaryStoreService store;
-	@Resource(mappedName = "java:jboss/exported/jms/topic/Notification")
+
+    @Resource(mappedName = "java:jboss/exported/jms/topic/Notification")
 	private Topic notificationTopic;
+
+	@Resource(mappedName = "java:jboss/exported/jms/topic/Ftp")
+	private Topic ftpTopic;
+
 	@Inject 
 	private JMSContext jmsctx;
 
@@ -104,20 +104,35 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 	@Override
 	@WebMethod(operationName = "completePendingFile")
 	public void completePendingFile(@WebParam(name = "id") String id,
+                                    @WebParam(name = "name") String name,
                                     @WebParam(name = "path") String filePath)
             throws FileServiceException {
 		LOGGER.log(Level.INFO, "CompletePendingFile  called (" + id + "|" + filePath +")");
 		FileItemEntity f = em.find(FileItemEntity.class, id);
         Path p = Paths.get(filePath);
-        String name = p.getFileName().toString();
         f.setName(name);
         f.setPath(p);
 		em.persist(f);
 
         this.notify(f.getOwner(), f.getReceivers(), id, f.getMessage());
 	}
-	
-	@Override
+
+    @Override
+    @WebMethod(operationName = "finalizeFtpUpload")
+    public FileStatus finalizeFtpUpload(@WebParam(name = "id") String id) throws FileServiceException {
+        /*FileStatus status = ftpService.closeTransfer(id);
+        if (status == FileStatus.OK){
+            FileItemEntity file = em.find(FileItemEntity.class, id);
+            this.notify(file.getOwner(), file.getReceivers(), id, file.getMessage());
+        }
+        return status;
+        */
+		LOGGER.log(Level.INFO, "============ <Webparam> id : " + id);
+		this.notifyFtp("finalize", id);
+		return FileStatus.OK;
+    }
+
+    @Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String postFile(String owner, List<String> receivers, String message, String name, byte[] data) throws FileServiceException {
 		LOGGER.log(Level.INFO, "Post File called (byte[])");
@@ -298,6 +313,21 @@ public class FileServiceBean implements FileService, FileServiceLocal, FileServi
 			LOGGER.log(Level.INFO, "no stale file item found: " + e.getMessage());
 			return null;
 		}
+	}
+
+
+	private void notifyFtp(String key, Object message)
+		throws FileServiceException
+	{
+		try {
+			javax.jms.Message m = jmsctx.createMessage();
+			m.setStringProperty("key", "finalize");
+			m.setObjectProperty("content", message);
+			jmsctx.createProducer().send(ftpTopic, m);
+		} catch (Exception e){
+			throw new FileServiceException("Unable to notify Ftp", e);
+		}
+
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

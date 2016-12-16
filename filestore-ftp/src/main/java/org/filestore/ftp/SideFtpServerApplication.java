@@ -4,17 +4,12 @@ import org.apache.ftpserver.ConnectionConfigFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.command.CommandFactoryFactory;
-import org.apache.ftpserver.ftplet.Authority;
 import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.Ftplet;
 import org.apache.ftpserver.listener.ListenerFactory;
-import org.apache.ftpserver.usermanager.impl.BaseUser;
-import org.apache.ftpserver.usermanager.impl.WritePermission;
 import org.filestore.api.FileService;
-import org.filestore.api.FileServiceException;
 import org.filestore.ftp.CustomCommands.CustomUSER;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.*;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -34,7 +29,11 @@ public class SideFtpServerApplication implements ServletContextListener {
     private FileService service;
 
 
-    private FtpServer server;
+    private static FtpServer server;
+
+    public static FtpServer getInstance(){
+        return server;
+    }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

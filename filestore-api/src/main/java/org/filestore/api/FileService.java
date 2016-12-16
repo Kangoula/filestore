@@ -1,6 +1,5 @@
 package org.filestore.api;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -48,7 +47,14 @@ public interface FileService {
 	@WebMethod(operationName = "completePendingFile")
 	public void completePendingFile(
 			@WebParam(name="id") String id,
+			@WebParam(name="name") String name,
 			@WebParam(name="path") String filePath
+	) throws FileServiceException;
+
+
+	@WebMethod(operationName = "finalizeFtpUpload")
+	public FileStatus finalizeFtpUpload(
+			@WebParam(name="id") String id
 	) throws FileServiceException;
 
 

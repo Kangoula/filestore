@@ -31,8 +31,8 @@
 		<version.commons-cli>1.3.1</version.commons-cli>
 		<version.onejar.plugin>1.4.4</version.onejar.plugin>
 		<version.jaxws.plugin>1.12</version.jaxws.plugin>
-		<maven.compiler.target>1.7</maven.compiler.target>
-		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
 	<organization>
@@ -120,6 +120,12 @@
 			<dependency>
 				<groupId>fr.miage.jayblanc</groupId>
 				<artifactId>filestore-web</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>fr.miage.jayblanc</groupId>
+				<artifactId>filestore-ftp</artifactId>
 				<version>${project.version}</version>
 				<type>war</type>
 			</dependency>
