@@ -81,7 +81,7 @@ public class CustomLets extends DefaultFtplet {
 
                 service.completePendingFile(
                         id,
-                        newFile.getFileName().toString(),
+                        request.getArgument(),
                         newFile.toAbsolutePath().toString());
 
 
